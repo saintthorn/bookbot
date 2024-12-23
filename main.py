@@ -3,9 +3,15 @@ def main():
 	text = get_path(book_path)
 	word_count = word_counter(text)
 	char_count = char_counter(text)
-	print(text)
-	print(word_count)
-	print(char_count)
+	new_dictionary = new_dict(char_count)
+	new_dictionary.sort(reverse=True, key=sort_on)
+	print(f"--- Begin report of {book_path} ---")
+	print(f"{word_count} words found in the document.")
+	for i in new_dictionary:
+		char_val = i["char"]
+		num_val = i["num"]
+		print(f"The '{char_val}' character was found {num_val} times.")
+	print("--- End report ---")
 
 def get_path(path):
 	with open(path) as f:
@@ -57,5 +63,23 @@ def char_counter(text):
 			else:
 				char_dict[char] = 1
 	return char_dict
+
+def new_dict(dict):
+	dict_list = []
+	for k in dict:
+		if k.isalpha():
+			up_dict = {
+			"char": "",
+			"num": 0
+		}
+			up_dict["char"] = k
+			up_dict["num"] = dict[k]
+			dict_list.append(up_dict)
+		else:
+			pass
+	return dict_list
+
+def sort_on(dict):
+	return dict["num"]
 
 main()
